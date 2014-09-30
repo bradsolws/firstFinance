@@ -23,8 +23,6 @@ $form = $this->beginWidget ( 'CActiveForm', array (
 					$model,
 					'name' 
 			),
-	/* 	'clientOptions'=>array(
-				'validateOnSubmit'=>true,), */
 
 ) );
 	?>

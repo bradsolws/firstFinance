@@ -22,26 +22,26 @@ $this->breadcrumbs=array(
 			'value' => 'CHtml::link(CHtml::encode($data->user_id),array("admin/update","id"=>$data->user_id))',
 		),
 		array(
-			'name' => 'username',
+			'name' => 'Username',
 			'type'=>'raw',
 			'value' => 'CHtml::link(CHtml::encode($data->userLogin->username),array("admin/view","id"=>$data->user_id))',
 		),
 		array(
-			'name'=>'email',
+			'name'=>'Email',
 			'type'=>'raw',
 			'value'=>'CHtml::link(CHtml::encode($data->email), "mailto:".$data->email)',
 		),
 		array(
-			'name' => 'createtime',
-			'value' => 'date("d.m.Y H:i:s",$data->create_ts)',
+			'name' => 'Created on',
+			'value' => 'date("d.m.Y H:i:s",strtotime($data->create_ts))',
 		),
-		array(
+		/* array(
 			'name' => 'lastvisit',
 			'value' => '(($data->lastvisit)?date("d.m.Y H:i:s",$data->lastvisit):UserModule::t("Not visited"))',
-		),
+		), */
 		array(
 			'name'=>'Role',
-			'value'=>'User::itemAlias("AdminStatus",$data->superuser)',
+			'value'=>'User::getRole($data->role)',
 		),
 		array(
 			'class'=>'CButtonColumn',

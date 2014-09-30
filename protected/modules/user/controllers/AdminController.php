@@ -20,7 +20,7 @@ class AdminController extends Controller
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */
-	public function accessRules()
+	/* public function accessRules()
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -31,7 +31,7 @@ class AdminController extends Controller
 				'users'=>array('*'),
 			),
 		);
-	}
+	} */
 	/**
 	 * Manages all models.
 	 */
@@ -99,27 +99,27 @@ class AdminController extends Controller
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
-		$profile=$model->profile;
+		$login=$model->userLogin;
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
-			$profile->attributes=$_POST['Profile'];
+			$login->attributes=$_POST['UserLogin'];
 			
-			if($model->validate()&&$profile->validate()) {
-				$old_password = User::model()->notsafe()->findByPk($model->id);
-				if ($old_password->password!=$model->password) {
-					$model->password=Yii::app()->controller->module->encrypting($model->password);
-					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
+			if($model->validate()&&$login->validate()) {
+				$old_password = UserLogin::model()->notsafe()->findByPk($model->user_id);
+				if ($old_password->password!=$login->password) {
+					$login->password=Yii::app()->controller->module->encrypting($login->password);
 				}
+				$model->updated_by=Yii::app()->user->id;
 				$model->save();
-				$profile->save();
-				$this->redirect(array('view','id'=>$model->id));
-			} else $profile->validate();
+				$login->save();
+				$this->redirect(array('view','id'=>$model->user_id));
+			} else $login->validate();
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
-			'profile'=>$profile,
+			'login'=>$login,
 		));
 	}
 
@@ -155,7 +155,7 @@ class AdminController extends Controller
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=User::model()->notsafe()->findbyPk($_GET['id']);
+				$this->_model=User::model()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 		}

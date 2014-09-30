@@ -1,28 +1,21 @@
-<?php
-/* @var $this UserController */
-/* @var $model User */
-/* @var $form CActiveForm */
-?>
-
 <div class="form">
 
 <?php
-
+	
 $form = $this->beginWidget ( 'CActiveForm', array (
-		'id' => 'user-form',
-		// Please note: When you enable ajax validation, make sure the corresponding
-		// controller action is handling ajax validation correctly.
-		// There is a call to performAjaxValidation() commented in generated controller code.
-		// See class documentation of CActiveForm for details on this.
-		'enableAjaxValidation' => false 
+			'id' => 'user-form',
+			'enableClientValidation' => true,
+			'enableAjaxValidation' => true,
+			'focus' => array (
+					$model,
+					'name' 
+			),
+
 ) );
-?>
-
-	<p class="note">
-		Fields with <span class="required">*</span> are required.
-	</p>
-
-	<?php echo $form->errorSummary($model); ?>
+	?>
+	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+	
+	<?php echo $form->errorSummary(array($model,$login)); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'name'); ?>
@@ -30,6 +23,12 @@ $form = $this->beginWidget ( 'CActiveForm', array (
 		<?php echo $form->error($model,'name'); ?>
 	</div>
 
+	<div class="row">
+    <?php echo $form->labelEx($model,'role'); ?>
+    <?php $form->radioButtonList($model, 'role', array(User::ROLE_ADMIN=>USER::ADMIN, User::ROLE_MEMBER=>USER::MEMBER)); ?>
+    <?php echo $form->error($model,'role'); ?>
+	</div>
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'mobile'); ?>
 		<?php echo $form->textField($model,'mobile',array('size'=>15,'maxlength'=>15)); ?>
@@ -77,36 +76,25 @@ $form = $this->beginWidget ( 'CActiveForm', array (
 		<?php echo $form->textField($model,'pincode',array('size'=>6,'maxlength'=>6)); ?>
 		<?php echo $form->error($model,'pincode'); ?>
 	</div>
-
+	<hr />
 	<div class="row">
-		<?php echo $form->labelEx($model,'create_ts'); ?>
-		<?php echo $form->textField($model,'create_ts'); ?>
-		<?php echo $form->error($model,'create_ts'); ?>
+	<?php echo $form->labelEx($login,'username'); ?>
+	<?php echo $form->textField($login,'username'); ?>
+	<?php echo $form->error($login,'username'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'update_ts'); ?>
-		<?php echo $form->textField($model,'update_ts'); ?>
-		<?php echo $form->error($model,'update_ts'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'updated_by'); ?>
-		<?php echo $form->textField($model,'updated_by',array('size'=>11,'maxlength'=>11)); ?>
-		<?php echo $form->error($model,'updated_by'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'role'); ?>
-		<?php echo $form->textField($model,'role',array('size'=>5,'maxlength'=>5)); ?>
-		<?php echo $form->error($model,'role'); ?>
+	<?php echo $form->labelEx($login,'password'); ?>
+	<?php echo $form->passwordField($login,'password'); ?>
+	<?php echo $form->error($login,'password'); ?>
+	<p class="hint">
+	<?php echo UserModule::t("Minimal password length 8 characters."); ?>
+	</p>
 	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
 
-<?php $this->endWidget(); ?>
-
-</div>
-<!-- form -->
+	<?php $this->endWidget(); ?>
+</div><!-- form -->

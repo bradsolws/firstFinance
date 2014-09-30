@@ -31,6 +31,9 @@ class User extends CActiveRecord {
 	
 	const ROLE_ADMIN=1;
 	const ROLE_MEMBER=2;
+	const ADMIN = "Administrator";
+	const MEMBER = "Member";
+	const UNDEFINED = "Undefined";
 	
 	/**
 	 *
@@ -64,24 +67,24 @@ class User extends CActiveRecord {
 				array ('name, mobile, email, address1, address2, city, state, country, pincode','safe','on' => 'search') 
 		);
 	}
-	
+
 	/**
-	 *
 	 * @return array relational rules.
 	 */
-	public function relations() {
+	public function relations()
+	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array (
-				'payments' => array (self::HAS_MANY,'Payment','user_id'),
-				'tips' => array (self::HAS_MANY,'Tips','updated_by'),
-				'updatedBy' => array (self::BELONGS_TO,'User','updated_by'),
-				'users' => array (self::HAS_MANY,'User','updated_by'),
-				'userLogin' => array (self::HAS_ONE,'UserLogin','user_id'),
-				'userPlan' => array (self::HAS_ONE,'UserPlan','user_id') 
+		return array(
+			'payments' => array(self::HAS_MANY, 'Payment', 'user_id'),
+			'tips' => array(self::HAS_MANY, 'Tips', 'updated_by'),
+			'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
+			'users' => array(self::HAS_MANY, 'User', 'updated_by'),
+			'userLogin' => array(self::HAS_ONE, 'UserLogin', 'user_id'),
+			'userPlan' => array(self::HAS_ONE, 'UserPlan', 'user_id'),
 		);
 	}
-	
+
 	/**
 	 *
 	 * @return array customized attribute labels (name=>label)
@@ -116,7 +119,8 @@ class User extends CActiveRecord {
 	 * @return CActiveDataProvider the data provider that can return the models
 	 *         based on the search/filter conditions.
 	 */
-	public function search() {
+	public function search()
+	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 		$criteria = new CDbCriteria ();
 		
@@ -151,12 +155,22 @@ class User extends CActiveRecord {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * 
-	 * @param string $className
-	 *        	active record class name.
+	 * @param string $className active record class name.
 	 * @return User the static model class
 	 */
-	public static function model($className = __CLASS__) {
-		return parent::model ( $className );
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
 	}
+	
+	public static function getRole($role)
+	{
+		if($role==self::ROLE_ADMIN)
+			return self::ADMIN;
+		else if($role==self::ROLE_MEMBER)
+			return self::MEMBER;
+		else 
+			return self::UNDEFINED;
+	}
+	
 }

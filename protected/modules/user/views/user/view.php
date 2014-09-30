@@ -56,7 +56,6 @@ $this->menu = array (
 $this->widget ( 'zii.widgets.CDetailView', array (
 		'data' => $model,
 		'attributes' => array (
-				'user_id',
 				'name',
 				'mobile',
 				'email',
